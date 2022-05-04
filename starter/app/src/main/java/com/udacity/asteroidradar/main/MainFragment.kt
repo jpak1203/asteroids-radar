@@ -1,12 +1,16 @@
 package com.udacity.asteroidradar.main
 
 import android.os.Bundle
-import android.view.*
-import androidx.databinding.DataBindingUtil
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.udacity.asteroidradar.R
+import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
+import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
+import com.udacity.asteroidradar.models.Asteroid
 
 class MainFragment : Fragment() {
 
@@ -22,20 +26,38 @@ class MainFragment : Fragment() {
 
         binding = FragmentMainBinding.inflate(inflater)
         binding.lifecycleOwner = this
-
         binding.viewModel = viewModel
+
+        adapter = AsteroidAdapter(AsteroidListener { asteroid ->
+            viewModel.onAsteroidClicked(asteroid)
+        })
+        binding.asteroidRecycler.adapter = adapter
+
+        viewModel.asteroids.observe(viewLifecycleOwner) { asteroids ->
+            adapter.submitList(asteroids)
+        }
+
+        viewModel.navigateToDetailFragment.observe(viewLifecycleOwner) { asteroid ->
+            navigateToDetailFragment(asteroid)
+            viewModel.onNavigateToDetailFragmentFinish()
+        }
+
+        viewModel.pictureOfDay.observe(viewLifecycleOwner) { pictureOfDay ->
+            pictureOfDay.let {
+                if (pictureOfDay.mediaType == "image") {
+                    Picasso.with(context).load(pictureOfDay.url)
+                        .into(binding.activityMainImageOfTheDay)
+                }
+            }
+        }
 
         setHasOptionsMenu(true)
 
         return binding.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.main_overflow_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
+    private fun navigateToDetailFragment(asteroid: Asteroid) {
+        findNavController().navigate(MainFragmentDirections.actionShowDetail(asteroid))
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return true
-    }
 }

@@ -32,8 +32,8 @@
             tools:text="68347 (2001 KB67" />
 
         <TextView
-            android:id="@+id/asteroid_approach_date_list_item"
             style="@style/SubtitleTextView"
+            android:id="@+id/asteroid_approach_date_list_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{asteroid.closeApproachDate}"
@@ -45,11 +45,11 @@
             android:id="@+id/asteroid_isHazardous_list_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            tools:ignore="ContentDescription"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:statusIcon="@{asteroid.potentiallyHazardous}"
-            tools:ignore="ContentDescription"
             tools:src="@drawable/ic_status_potentially_hazardous" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
