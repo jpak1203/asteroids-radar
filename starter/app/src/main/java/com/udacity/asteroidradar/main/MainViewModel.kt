@@ -29,7 +29,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     init {
         getPictureOfDay()
         viewModelScope.launch {
-            asteroidRepository.refreshAsteroids()
+            try {
+                asteroidRepository.refreshAsteroids()
+            } catch (e: Exception) {
+                println("Exception refreshing data: $e.message")
+            }
         }
     }
 
@@ -52,5 +56,4 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun onNavigateToDetailFragmentFinish() {
         _navigateToDetailFragment.value = null
     }
-
 }

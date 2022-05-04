@@ -27,7 +27,6 @@ class AsteroidRepository(private val database: AsteroidDatabase){
         startDate: String = getToday(),
         endDate: String = getWeek()
     ) {
-
         var asteroidList: List<Asteroid>
         withContext(Dispatchers.IO) {
             val asteroidResponseBody = AsteroidApi.asteroids.getAsteroidsAsync(
