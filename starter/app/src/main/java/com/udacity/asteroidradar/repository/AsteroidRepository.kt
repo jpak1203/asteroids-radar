@@ -4,11 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.api.AsteroidApi
+import com.udacity.asteroidradar.api.NetworkAsteroidContainer
+import com.udacity.asteroidradar.api.asDatabaseModel
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.database.TimeFrameProvider.getToday
 import com.udacity.asteroidradar.database.TimeFrameProvider.getWeek
-import com.udacity.asteroidradar.database.asDatabaseModel
 import com.udacity.asteroidradar.database.asDomainModel
 import com.udacity.asteroidradar.models.Asteroid
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +35,9 @@ class AsteroidRepository(private val database: AsteroidDatabase){
             ).await()
 
             asteroidList = parseAsteroidsJsonResult(JSONObject(asteroidResponseBody.string()))
-            database.asteroidDao.insertAll(*asteroidList.asDatabaseModel())
+            val networkAsteroidContainer = NetworkAsteroidContainer(asteroidList)
+
+            database.asteroidDao.insertAll(*networkAsteroidContainer.asDatabaseModel())
         }
     }
 }

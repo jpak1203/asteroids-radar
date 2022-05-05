@@ -1,5 +1,6 @@
 package com.udacity.asteroidradar.database
 
+import android.util.Log
 import com.udacity.asteroidradar.Constants
 import java.text.SimpleDateFormat
 import java.util.*
@@ -9,6 +10,7 @@ object TimeFrameProvider {
         val calendar = Calendar.getInstance()
         val currentTime = calendar.time
         val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
+        Log.i("Time", dateFormat.format(currentTime))
         return dateFormat.format(currentTime)
     }
 

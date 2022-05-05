@@ -26,6 +26,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val pictureOfDay: LiveData<PictureOfDay>
         get() = _pictureOfDay
 
+    val asteroids = asteroidRepository.asteroids
+
     init {
         getPictureOfDay()
         viewModelScope.launch {
@@ -36,8 +38,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
-
-    val asteroids = asteroidRepository.asteroids
 
     private fun getPictureOfDay() {
         viewModelScope.launch {
