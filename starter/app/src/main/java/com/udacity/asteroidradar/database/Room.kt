@@ -13,8 +13,8 @@ interface AsteroidDao {
     @Query("SELECT * FROM asteroids_table WHERE closeApproachDate >= :startDay ORDER BY closeApproachDate")
     fun getAsteroids(startDay: String) : LiveData<List<DatabaseAsteroid>>
 
-    @Query("DELETE FROM asteroids_table")
-    suspend fun clear()
+    @Query("DELETE FROM asteroids_table WHERE closeApproachDate < :today")
+    suspend fun clear(today: String)
 }
 
 @Database(entities = [DatabaseAsteroid::class], version = 1)
